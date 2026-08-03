@@ -408,116 +408,182 @@ opacity:1;
 }
 
 
-/* THANK YOU SCREEN */
+/*========================================
+      WOMEN'S DAY SCREEN
+=========================================*/
 
 .thankyou{
-
     justify-content:center;
-
     align-items:center;
-
-    background:linear-gradient(
-    135deg,
-    #000814,
-    #001d3d,
-    #003566,
-    #0a2342,
-    #b8860b
-    );
-
+    background:
+    radial-gradient(circle at top,#ff8ac6,#c2185b 35%,#5e0066 70%,#190019);
+    overflow:hidden;
 }
 
 .thankyou-box{
-
     text-align:center;
-
-    animation:thankYouEntrance 2s ease;
-
+    animation:womenEntrance 2s ease;
+    z-index:10;
 }
 
 .thankyou h1{
-
-    font-size:9vw;
-
-    font-weight:900;
-
+    font-size:6vw;
     color:#FFD700;
-
+    letter-spacing:10px;
     text-shadow:
         0 0 20px gold,
-        0 0 40px gold,
-        0 0 70px orange;
+        0 0 40px gold;
+    animation:goldPulse 2s infinite alternate;
+}
 
-    animation:thankGlow 2s ease-in-out infinite alternate;
-
+.thankyou h2{
+    font-size:8vw;
+    color:#ffb6e6;
+    font-weight:900;
+    margin-top:15px;
+    letter-spacing:5px;
+    text-shadow:
+        0 0 20px #ff69b4,
+        0 0 40px #ff1493,
+        0 0 80px white;
+    animation:womenGlow 2s infinite alternate;
 }
 
 .thankyou p{
-
-    font-size:2.2vw;
-
-    margin-top:25px;
-
+    margin-top:35px;
+    font-size:2vw;
     color:white;
-
-    letter-spacing:3px;
-
+    letter-spacing:2px;
 }
 
 .thankyou span{
-
     display:block;
+    margin-top:20px;
+    font-size:1.7vw;
+    color:#FFD700;
+    font-style:italic;
+}
 
-    margin-top:18px;
+/* Floating Hearts */
 
-    font-size:1.8vw;
+.heart{
+    position:absolute;
+    font-size:2.5vw;
+    color:#ff6fb5;
+    animation:floatHeart linear infinite;
+    opacity:.8;
+}
 
-    color:#87CEFA;
+.h1{left:10%;bottom:-10%;animation-duration:10s;}
+.h2{left:30%;bottom:-20%;animation-duration:14s;}
+.h3{left:50%;bottom:-15%;animation-duration:12s;}
+.h4{left:70%;bottom:-25%;animation-duration:16s;}
+.h5{left:90%;bottom:-18%;animation-duration:11s;}
+
+@keyframes floatHeart{
+
+0%{
+transform:translateY(0) scale(.5) rotate(0deg);
+opacity:0;
+}
+
+20%{
+opacity:1;
+}
+
+100%{
+transform:translateY(-120vh) scale(1.4) rotate(360deg);
+opacity:0;
+}
 
 }
 
-@keyframes thankGlow{
+/* Sparkles */
 
-    from{
+.sparkle{
+position:absolute;
+font-size:2vw;
+color:white;
+animation:twinkle 2s infinite alternate;
+}
 
-        transform:scale(1);
+.sparkle.s1{top:15%;left:20%;}
+.sparkle.s2{top:25%;right:15%;}
+.sparkle.s3{bottom:20%;left:25%;}
+.sparkle.s4{bottom:15%;right:25%;}
 
-        text-shadow:
-            0 0 15px gold,
-            0 0 30px gold;
+@keyframes twinkle{
 
-    }
+from{
+opacity:.2;
+transform:scale(.5) rotate(0deg);
+}
 
-    to{
-
-        transform:scale(1.08);
-
-        text-shadow:
-            0 0 35px gold,
-            0 0 70px orange,
-            0 0 120px white;
-
-    }
+to{
+opacity:1;
+transform:scale(1.6) rotate(180deg);
+}
 
 }
 
-@keyframes thankYouEntrance{
+/* Text Animations */
 
-    from{
+@keyframes womenGlow{
 
-        opacity:0;
+from{
 
-        transform:scale(.4) rotate(-8deg);
+transform:scale(1);
 
-    }
+text-shadow:
+0 0 20px #ff69b4,
+0 0 40px #ff1493;
 
-    to{
+}
 
-        opacity:1;
+to{
 
-        transform:scale(1) rotate(0);
+transform:scale(1.08);
 
-    }
+text-shadow:
+0 0 40px #ff69b4,
+0 0 70px #ff1493,
+0 0 120px white;
+
+}
+
+}
+
+@keyframes goldPulse{
+
+from{
+
+transform:scale(1);
+
+}
+
+to{
+
+transform:scale(1.06);
+
+}
+
+}
+
+@keyframes womenEntrance{
+
+from{
+
+opacity:0;
+transform:scale(.4) rotate(-15deg);
+
+}
+
+to{
+
+opacity:1;
+transform:scale(1) rotate(0deg);
+
+}
 
 }
 
@@ -707,15 +773,31 @@ opacity:1;
         </div>
 
     </div>
-	<div class="announcement thankyou">
+	<!-- HAPPY WOMEN'S DAY SCREEN -->
+<div class="announcement thankyou">
+
+    <!-- Floating Hearts -->
+    <div class="heart h1">❤</div>
+    <div class="heart h2">❤</div>
+    <div class="heart h3">❤</div>
+    <div class="heart h4">❤</div>
+    <div class="heart h5">❤</div>
+
+    <!-- Sparkles -->
+    <div class="sparkle s1">✦</div>
+    <div class="sparkle s2">✦</div>
+    <div class="sparkle s3">✦</div>
+    <div class="sparkle s4">✦</div>
 
     <div class="thankyou-box">
 
-        <h1>THANK YOU</h1>
+        <h1>HAPPY</h1>
 
-        <p>We appreciate your fellowship today.</p>
+        <h2>WOMEN'S DAY</h2>
 
-        <span>Have a blessed week!</span>
+        <p>Celebrating the Strength, Grace and Wisdom of Every Woman.</p>
+
+        <span>"She is clothed with strength and dignity." – Proverbs 31:25</span>
 
     </div>
 
