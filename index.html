@@ -1,66 +1,116 @@
-```
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PCG ANNOUNCEMENTS</title>
+
+<title>PCG | Women's Month Announcements</title>
 
 <style>
 
+/* =========================
+   RESET
+========================= */
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
-html,body{
+html,
+body{
     width:100%;
     height:100%;
     overflow:hidden;
 }
 
+
+/* =========================
+   WOMEN'S MONTH BACKGROUND
+========================= */
 body{
     font-family:Arial, Helvetica, sans-serif;
     position:relative;
     color:#fff;
 
-    /* PREMIUM CHAMPAGNE / ANTIQUE GOLD BACKGROUND */
     background:linear-gradient(
         -45deg,
-        #2B1608,
-        #42240D,
-        #5A3412,
-        #8A5A20,
-        #A9782A,
-        #C99A3D,
-        #E8C98D,
-        #5A3412,
-        #2B1608
+        #2b0b3f,
+        #4a124f,
+        #70205f,
+        #9b316b,
+        #c34f88,
+        #ec8eb4,
+        #f7b6ce,
+        #a95081,
+        #5a174f,
+        #2b0b3f
     );
 
-    background-size:400% 400%;
+    background-size:500% 500%;
     animation:gradientShift 25s ease infinite;
 }
 
 @keyframes gradientShift{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
+    0%{
+        background-position:0% 50%;
+    }
+
+    50%{
+        background-position:100% 50%;
+    }
+
+    100%{
+        background-position:0% 50%;
+    }
+}
+
+
+/* =========================
+   SOFT WOMEN'S MONTH LIGHT
+========================= */
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(255,255,255,.16),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 85% 75%,
+            rgba(255,182,193,.20),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(255,215,230,.08),
+            transparent 55%
+        );
+
+    pointer-events:none;
+    z-index:0;
 }
 
 
 /* =========================
    BACKGROUND SCROLLING BAND
 ========================= */
-
 .bg-scroll{
     position:absolute;
     top:50%;
     left:0;
+
     transform:translateY(-50%);
+
     width:100%;
     overflow:hidden;
+
     z-index:1;
     pointer-events:none;
 }
@@ -68,19 +118,25 @@ body{
 .bg-scroll-track{
     display:flex;
     width:max-content;
+
     animation:bgScroll 220s linear infinite;
 }
 
 .bg-scroll-track span{
-    font-size:22vw;
+    font-size:28vw;
     font-weight:900;
+
     color:transparent;
 
-    -webkit-text-stroke:2px white;
-    text-stroke:2px rgba(255,220,180,0.18);
+    -webkit-text-stroke:
+        2px rgba(255,209,220,.18);
+
+    text-stroke:
+        2px rgba(255,209,220,.18);
 
     white-space:nowrap;
     padding-right:6vw;
+
     line-height:1;
     text-transform:uppercase;
 }
@@ -99,20 +155,19 @@ body{
 /* =========================
    INTRO SCREEN
 ========================= */
-
 .intro{
     justify-content:center;
     align-items:center;
 
-    background:linear-gradient(
-        135deg,
-        #2B1608,
-        #5A3412,
-        #8A5A20,
-        #C99A3D,
-        #E8C98D,
-        #A9782A
-    );
+    background:
+        radial-gradient(
+            circle at top,
+            #ffdce9,
+            #f6a8c4 25%,
+            #d35b94 50%,
+            #7d2b70 75%,
+            #351044
+        );
 }
 
 .intro-box{
@@ -121,33 +176,29 @@ body{
 
 .intro h1{
     font-size:8vw;
-
-    color:#F6E8C8;
-
+    color:#fff8fb;
     font-weight:900;
-
     letter-spacing:8px;
 
     text-shadow:
-        0 0 20px #E8C98D,
-        0 0 40px #C99A3D,
-        0 0 80px #FFF8E8;
+        0 0 20px #ffb6d1,
+        0 0 40px #ff69a8,
+        0 0 80px #ffffff;
 
     animation:introGlow 2s infinite alternate;
 }
 
 .intro p{
     margin-top:30px;
-
     font-size:3vw;
-
-    color:#FFF8E8;
-
+    color:#fff0f5;
     letter-spacing:3px;
+
+    text-shadow:
+        0 0 15px rgba(120,25,90,.6);
 }
 
 @keyframes introGlow{
-
     from{
         transform:scale(.95);
     }
@@ -155,14 +206,12 @@ body{
     to{
         transform:scale(1.05);
     }
-
 }
 
 
 /* =========================
    HEADER
 ========================= */
-
 .header{
     position:absolute;
     top:2vh;
@@ -173,47 +222,288 @@ body{
 
     gap:1.2vw;
 
-    z-index:20;
-
-    max-width:70vw;
-}
-
-.logo{
-    width:150px;
-    height:115px;
-
-    object-fit:fill;
-}
-
-.church-name{
-    font-size:3.5vw;
-
-    font-weight:1000;
-
-    letter-spacing:2px;
-
-    text-transform:uppercase;
-
-    line-height:1.2;
-
-    /* DEEP ESPRESSO-BROWN TEXT */
-    color:#5A3412;
-
-    /* ANTIQUE-GOLD OUTLINE */
-    -webkit-text-stroke:2px #D9B15F;
-    text-stroke:2px #D9B15F;
-
-    text-shadow:
-        0 0 10px rgba(222,176,123,0.7),
-        0 0 20px rgba(183,122,82,0.5),
-        2px 2px 5px rgba(0,0,0,0.5);
+    z-index:100;
+    max-width:78vw;
 }
 
 
 /* =========================
-   OUTLINE + MAIN ANNOUNCEMENTS
+   ANIMATED FLORAL LOGO FRAME
 ========================= */
+.logo-frame{
+    position:relative;
 
+    width:175px;
+    height:140px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+}
+
+.logo-frame::before{
+    content:"";
+
+    position:absolute;
+
+    width:125px;
+    height:125px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.9),
+            rgba(255,182,193,.55),
+            rgba(255,105,180,.2),
+            transparent 72%
+        );
+
+    box-shadow:
+        0 0 20px rgba(255,182,193,.8),
+        0 0 45px rgba(255,105,180,.55);
+
+    animation:logoGlow 4s ease-in-out infinite;
+}
+
+.logo{
+    width:145px;
+    height:110px;
+
+    object-fit:contain;
+
+    position:relative;
+    z-index:10;
+
+    filter:
+        drop-shadow(0 0 8px rgba(255,255,255,.9))
+        drop-shadow(0 0 18px rgba(255,105,180,.7));
+
+    animation:logoFloat 5s ease-in-out infinite;
+}
+
+@keyframes logoFloat{
+    0%,
+    100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-6px);
+    }
+}
+
+@keyframes logoGlow{
+    0%,
+    100%{
+        transform:scale(1);
+        opacity:.7;
+    }
+
+    50%{
+        transform:scale(1.15);
+        opacity:1;
+    }
+}
+
+
+/* =========================
+   FLOWERS AROUND LOGO
+========================= */
+.logo-flower{
+    position:absolute;
+
+    z-index:20;
+
+    font-size:34px;
+
+    filter:
+        drop-shadow(0 0 5px rgba(255,255,255,.9))
+        drop-shadow(0 0 12px rgba(255,105,180,.7));
+
+    animation:
+        flowerFloat 4s ease-in-out infinite,
+        flowerRotate 12s linear infinite;
+}
+
+.flower1{
+    top:-10px;
+    left:5px;
+}
+
+.flower2{
+    top:-12px;
+    right:5px;
+    animation-delay:-2s;
+}
+
+.flower3{
+    bottom:-8px;
+    left:4px;
+    animation-delay:-4s;
+}
+
+.flower4{
+    bottom:-8px;
+    right:4px;
+    animation-delay:-1s;
+}
+
+.flower5{
+    left:-12px;
+    top:42%;
+    font-size:29px;
+    animation-delay:-3s;
+}
+
+.flower6{
+    right:-12px;
+    top:42%;
+    font-size:29px;
+    animation-delay:-5s;
+}
+
+@keyframes flowerFloat{
+    0%,
+    100%{
+        transform:translateY(0) scale(1);
+    }
+
+    50%{
+        transform:translateY(-9px) scale(1.12);
+    }
+}
+
+@keyframes flowerRotate{
+    from{
+        rotate:0deg;
+    }
+
+    to{
+        rotate:360deg;
+    }
+}
+
+
+/* =========================
+   PETALS AROUND LOGO
+========================= */
+.petal{
+    position:absolute;
+
+    width:10px;
+    height:16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #ffc0d6,
+            #ff69a8
+        );
+
+    border-radius:
+        80% 20%
+        80% 20%;
+
+    z-index:15;
+
+    box-shadow:
+        0 0 8px rgba(255,255,255,.8);
+
+    animation:petalMove 6s ease-in-out infinite;
+}
+
+.petal1{
+    top:8px;
+    left:42px;
+}
+
+.petal2{
+    top:8px;
+    right:42px;
+    animation-delay:-2s;
+}
+
+.petal3{
+    bottom:7px;
+    left:40px;
+    animation-delay:-4s;
+}
+
+.petal4{
+    bottom:7px;
+    right:40px;
+    animation-delay:-1s;
+}
+
+@keyframes petalMove{
+    0%,
+    100%{
+        transform:
+            translate(0,0)
+            rotate(0deg);
+    }
+
+    50%{
+        transform:
+            translate(12px,-10px)
+            rotate(180deg);
+    }
+}
+
+
+/* =========================
+   CHURCH NAME
+========================= */
+.church-name{
+    font-size:3.5vw;
+    font-weight:1000;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    line-height:1.2;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #ffd5e4,
+            #ff9fc5,
+            #ffd700,
+            #fff0f6,
+            #ffffff
+        );
+
+    background-size:300% 100%;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+    animation:churchShine 10s linear infinite;
+
+    filter:
+        drop-shadow(0 0 10px rgba(255,105,180,.65));
+}
+
+@keyframes churchShine{
+    from{
+        background-position:0% 50%;
+    }
+
+    to{
+        background-position:300% 50%;
+    }
+}
+
+
+/* =========================
+   ANNOUNCEMENT CONTAINER
+========================= */
 .announcement-container{
     position:absolute;
 
@@ -243,13 +533,18 @@ body{
 
     opacity:0;
 
-    transition:1.5s;
+    transition:
+        opacity 1.5s ease;
 }
 
 .announcement.active{
     opacity:1;
 }
 
+
+/* =========================
+   ANNOUNCEMENT IMAGES
+========================= */
 .announcement img{
     width:50%;
     height:100%;
@@ -258,56 +553,95 @@ body{
 
     border-radius:30px;
 
-    /* CHAMPAGNE-GOLD GLOW */
     box-shadow:
-        0 0 25px #E8C98D,
-        0 0 50px rgba(183,122,82,0.55);
+        0 0 20px #ffc1d6,
+        0 0 45px rgba(255,105,180,.5),
+        0 0 70px rgba(186,85,211,.2);
+
+    animation:imageGlow 4s ease-in-out infinite;
 }
 
-.info{
-    text-align:left;
-}
+@keyframes imageGlow{
+    0%,
+    100%{
+        transform:scale(1);
+    }
 
-.info h1{
-    font-size:4vw;
-
-    color:white;
-
-    text-shadow:
-        0 0 15px rgba(222,176,123,0.6);
-}
-
-.info h2{
-    font-size:5vw;
-
-    margin:20px 0;
-
-    color:#5A3412;
-
-    text-shadow:
-        0 0 15px rgba(222,176,123,0.5);
-}
-
-.info h3{
-    font-size:4vw;
-
-    color:#F6E8C8;
-
-    text-shadow:
-        0 0 10px rgba(183,122,82,0.5);
+    50%{
+        transform:scale(1.015);
+    }
 }
 
 
 /* =========================
-   HOMECELL
+   ANNOUNCEMENT TEXT
 ========================= */
+.info{
+    text-align:left;
+    padding-left:3vw;
+}
 
+.info h1{
+    font-size:4vw;
+    color:#fff8fb;
+
+    text-shadow:
+        0 0 15px rgba(255,182,193,.8);
+}
+
+.info h2{
+    font-size:5vw;
+    margin:20px 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffb3cf,
+            #ffffff,
+            #ffd700,
+            #ff69a8
+        );
+
+    background-size:250% 100%;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+    animation:infoShine 8s linear infinite;
+
+    text-shadow:
+        0 0 15px rgba(255,105,180,.4);
+}
+
+.info h3{
+    font-size:4vw;
+    color:#fff0f5;
+
+    text-shadow:
+        0 0 12px rgba(255,105,180,.6);
+}
+
+@keyframes infoShine{
+    from{
+        background-position:0% 50%;
+    }
+
+    to{
+        background-position:250% 50%;
+    }
+}
+
+
+/* =========================
+   HOMECELL ANIMATION
+========================= */
 .homecell.active{
-    animation:slideLeft 1.5s;
+    animation:slideLeft 1.5s ease;
 }
 
 @keyframes slideLeft{
-
     from{
         transform:translateX(-200px);
         opacity:0;
@@ -317,20 +651,17 @@ body{
         transform:translateX(0);
         opacity:1;
     }
-
 }
 
 
 /* =========================
-   WOMEN
+   WOMEN'S SERVICE ANIMATION
 ========================= */
-
 .women.active{
-    animation:fadeBloom 2s;
+    animation:fadeBloom 2s ease;
 }
 
 @keyframes fadeBloom{
-
     from{
         opacity:0;
         transform:scale(.6);
@@ -340,20 +671,17 @@ body{
         opacity:1;
         transform:scale(1);
     }
-
 }
 
 
 /* =========================
-   YOUTH
+   YOUTH ANIMATION
 ========================= */
-
 .youth.active{
-    animation:zoomPulse 1.8s;
+    animation:zoomPulse 1.8s ease;
 }
 
 @keyframes zoomPulse{
-
     0%{
         transform:scale(.4);
         opacity:0;
@@ -367,43 +695,37 @@ body{
         transform:scale(1);
         opacity:1;
     }
-
 }
 
 
 /* =========================
-   REHEARSAL
+   REHEARSAL ANIMATION
 ========================= */
-
 .rehearsal.active{
-    animation:rotateIn 1.8s;
+    animation:rotateIn 1.8s ease;
 }
 
 @keyframes rotateIn{
-
     from{
         transform:rotate(-25deg) scale(.4);
         opacity:0;
     }
 
     to{
-        transform:rotate(0);
+        transform:rotate(0) scale(1);
         opacity:1;
     }
-
 }
 
 
 /* =========================
-   SUNDAY
+   SUNDAY ANIMATION
 ========================= */
-
 .sunday.active{
-    animation:heaven 3s;
+    animation:heaven 3s ease;
 }
 
 @keyframes heaven{
-
     0%{
         transform:translateY(120px);
         opacity:0;
@@ -413,51 +735,48 @@ body{
         transform:translateY(0);
         opacity:1;
     }
-
 }
 
 
-/* ========================================
-       WOMEN'S DAY SCREEN
-======================================== */
-
+/* =========================
+   WOMEN'S DAY SCREEN
+========================= */
 .thankyou{
     justify-content:center;
     align-items:center;
 
-    /* CHAMPAGNE / IVORY / ANTIQUE-GOLD WOMEN'S DAY GRADIENT */
     background:
         radial-gradient(
             circle at top,
-            #F6E8C8,
-            #E8C98D 30%,
-            #C99A3D 55%,
-            #8A5A20 75%,
-            #42240D
+            #fff5f9,
+            #ffd3e3 25%,
+            #f29ac0 45%,
+            #b44784 65%,
+            #4a174f 100%
         );
 
     overflow:hidden;
 }
 
 .thankyou-box{
+    position:relative;
+    z-index:10;
+
     text-align:center;
 
     animation:womenEntrance 2s ease;
-
-    z-index:10;
 }
 
 .thankyou h1{
     font-size:6vw;
-
-    color:#FFF8E8;
+    color:#fff;
 
     letter-spacing:10px;
 
     text-shadow:
-        0 0 20px #C99A3D,
-        0 0 40px #8A5A20,
-        0 0 70px rgba(255,245,236,0.8);
+        0 0 20px #ffb6d1,
+        0 0 40px #ff69a8,
+        0 0 70px #ffffff;
 
     animation:goldPulse 2s infinite alternate;
 }
@@ -465,20 +784,32 @@ body{
 .thankyou h2{
     font-size:8vw;
 
-    color:#F6E8C8;
-
     font-weight:900;
 
     margin-top:15px;
 
     letter-spacing:5px;
 
-    text-shadow:
-        0 0 20px #A9782A,
-        0 0 40px #8A5A20,
-        0 0 80px #FFF8E8;
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #ffd0df,
+            #ff69a8,
+            #ffd700,
+            #ffffff
+        );
 
-    animation:womenGlow 2s infinite alternate;
+    background-size:300% 100%;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+    animation:
+        womenGlow 2s infinite alternate,
+        womenShine 8s linear infinite;
 }
 
 .thankyou p{
@@ -486,12 +817,12 @@ body{
 
     font-size:2vw;
 
-    color:#FFF8E8;
+    color:#fff8fb;
 
     letter-spacing:2px;
 
     text-shadow:
-        0 0 10px rgba(0,0,0,0.4);
+        0 0 12px rgba(70,10,55,.7);
 }
 
 .thankyou span{
@@ -501,32 +832,96 @@ body{
 
     font-size:1.7vw;
 
-    color:#D9B15F;
+    color:#fff0f5;
 
     font-style:italic;
 
     text-shadow:
-        0 0 10px rgba(0,0,0,0.5);
+        0 0 10px rgba(70,10,55,.7);
+}
+
+
+/* =========================
+   FLOATING FLOWERS
+========================= */
+.floating-flower{
+    position:absolute;
+
+    z-index:4;
+
+    font-size:3vw;
+
+    opacity:.75;
+
+    filter:
+        drop-shadow(0 0 8px rgba(255,255,255,.7));
+
+    animation:
+        bigFlowerFloat 10s ease-in-out infinite,
+        bigFlowerRotate 18s linear infinite;
+}
+
+.ff1{
+    top:12%;
+    left:8%;
+}
+
+.ff2{
+    top:18%;
+    right:9%;
+    animation-delay:-3s;
+}
+
+.ff3{
+    bottom:13%;
+    left:10%;
+    animation-delay:-6s;
+}
+
+.ff4{
+    bottom:15%;
+    right:10%;
+    animation-delay:-2s;
+}
+
+@keyframes bigFlowerFloat{
+    0%,
+    100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-25px);
+    }
+}
+
+@keyframes bigFlowerRotate{
+    from{
+        rotate:0deg;
+    }
+
+    to{
+        rotate:360deg;
+    }
 }
 
 
 /* =========================
    FLOATING HEARTS
 ========================= */
-
 .heart{
     position:absolute;
 
     font-size:2.5vw;
 
-    color:#D4A63F;
+    color:#ffb6d1;
 
     animation:floatHeart linear infinite;
 
-    opacity:.8;
+    opacity:.85;
 
     text-shadow:
-        0 0 15px #C99A3D;
+        0 0 15px #ff69a8;
 }
 
 .h1{
@@ -560,7 +955,6 @@ body{
 }
 
 @keyframes floatHeart{
-
     0%{
         transform:translateY(0) scale(.5) rotate(0deg);
         opacity:0;
@@ -574,25 +968,23 @@ body{
         transform:translateY(-120vh) scale(1.4) rotate(360deg);
         opacity:0;
     }
-
 }
 
 
 /* =========================
    SPARKLES
 ========================= */
-
 .sparkle{
     position:absolute;
 
     font-size:2vw;
 
-    color:#FFF8E8;
+    color:#fff;
 
     animation:twinkle 2s infinite alternate;
 
     text-shadow:
-        0 0 15px #E8C98D;
+        0 0 15px #ffb6d1;
 }
 
 .sparkle.s1{
@@ -616,7 +1008,6 @@ body{
 }
 
 @keyframes twinkle{
-
     from{
         opacity:.2;
         transform:scale(.5) rotate(0deg);
@@ -626,39 +1017,40 @@ body{
         opacity:1;
         transform:scale(1.6) rotate(180deg);
     }
-
 }
 
 
 /* =========================
-   TEXT ANIMATIONS
+   WOMEN'S DAY TEXT ANIMATIONS
 ========================= */
-
 @keyframes womenGlow{
-
     from{
-
         transform:scale(1);
 
-        text-shadow:
-            0 0 20px #A9782A,
-            0 0 40px #8A5A20;
+        filter:
+            drop-shadow(0 0 15px #ff69a8);
     }
 
     to{
-
         transform:scale(1.08);
 
-        text-shadow:
-            0 0 40px #C99A3D,
-            0 0 70px #E8C98D,
-            0 0 120px #FFF8E8;
+        filter:
+            drop-shadow(0 0 30px #ff69a8)
+            drop-shadow(0 0 60px #ffd1df);
+    }
+}
+
+@keyframes womenShine{
+    from{
+        background-position:0% 50%;
     }
 
+    to{
+        background-position:300% 50%;
+    }
 }
 
 @keyframes goldPulse{
-
     from{
         transform:scale(1);
     }
@@ -666,28 +1058,24 @@ body{
     to{
         transform:scale(1.06);
     }
-
 }
 
 @keyframes womenEntrance{
-
     from{
         opacity:0;
-        transform:scale(.4) rotate(-15deg);
+        transform:scale(.4) rotate(-12deg);
     }
 
     to{
         opacity:1;
         transform:scale(1) rotate(0deg);
     }
-
 }
 
 
 /* =========================
-   FLOATING SHAPES
+   FLOATING BACKGROUND SHAPES
 ========================= */
-
 .shape{
     position:absolute;
 
@@ -709,7 +1097,7 @@ body{
     background:
         radial-gradient(
             circle,
-            #E8C98D,
+            #ff69a8,
             transparent 70%
         );
 
@@ -726,7 +1114,7 @@ body{
     background:
         radial-gradient(
             circle,
-            #C99A3D,
+            #ffd1df,
             transparent 70%
         );
 
@@ -743,7 +1131,7 @@ body{
     background:
         radial-gradient(
             circle,
-            #8A5A20,
+            #b76cc7,
             transparent 70%
         );
 
@@ -760,7 +1148,7 @@ body{
     background:
         radial-gradient(
             circle,
-            #D9B15F,
+            #ffd700,
             transparent 70%
         );
 
@@ -771,46 +1159,42 @@ body{
 }
 
 @keyframes float1{
-
-    0%,100%{
+    0%,
+    100%{
         transform:translateY(0) rotate(0deg);
     }
 
     50%{
         transform:translateY(-4vh) rotate(180deg);
     }
-
 }
 
 @keyframes float2{
-
-    0%,100%{
+    0%,
+    100%{
         transform:translateY(0);
     }
 
     50%{
         transform:translateY(5vh);
     }
-
 }
 
 @keyframes float3{
-
-    0%,100%{
+    0%,
+    100%{
         transform:translateX(0);
     }
 
     50%{
         transform:translateX(-5vw);
     }
-
 }
 
 
 /* =========================
    FOOTER
 ========================= */
-
 .footer{
     position:absolute;
 
@@ -820,25 +1204,24 @@ body{
 
     text-align:center;
 
-    font-size:1.8vw;
+    font-size:2.5vw;
 
     font-weight:600;
 
     letter-spacing:2px;
 
-    color:white;
+    color:#fff5f9;
 
     z-index:20;
 
     text-shadow:
-        0 0 15px rgba(111,74,53,0.7);
+        0 0 15px rgba(255,105,180,.8);
 }
 
 
 /* =========================
    CENTRAL GLOW
 ========================= */
-
 .glow{
     position:absolute;
 
@@ -851,9 +1234,10 @@ body{
     background:
         radial-gradient(
             circle,
-            rgba(222,176,123,.35),
-            rgba(183,122,82,.25),
-            rgba(111,74,53,.18),
+            rgba(255,105,180,.32),
+            rgba(255,182,193,.24),
+            rgba(186,85,211,.16),
+            rgba(255,215,0,.08),
             transparent 70%
         );
 
@@ -868,8 +1252,8 @@ body{
 }
 
 @keyframes glowPulse{
-
-    0%,100%{
+    0%,
+    100%{
         opacity:.7;
         transform:translate(-50%,-50%) scale(1);
     }
@@ -878,7 +1262,6 @@ body{
         opacity:1;
         transform:translate(-50%,-50%) scale(1.15);
     }
-
 }
 
 </style>
@@ -886,11 +1269,12 @@ body{
 
 <body>
 
+
+<!-- CENTRAL GLOW -->
 <div class="glow"></div>
 
 
-<!-- Seamless background scrolling ANNOUNCEMENTS -->
-
+<!-- BACKGROUND SCROLLING BAND -->
 <div class="bg-scroll">
 
     <div class="bg-scroll-track">
@@ -901,7 +1285,7 @@ body{
             ANNOUNCEMENTS&nbsp;&nbsp;
             ANNOUNCEMENTS&nbsp;&nbsp;
             ANNOUNCEMENTS&nbsp;&nbsp;
-            ANNOUNCEMENTS&nbsp;&nbsp;
+            ANNOUNCEMENTS
         </span>
 
         <span>
@@ -910,7 +1294,7 @@ body{
             ANNOUNCEMENTS&nbsp;&nbsp;
             ANNOUNCEMENTS&nbsp;&nbsp;
             ANNOUNCEMENTS&nbsp;&nbsp;
-            ANNOUNCEMENTS&nbsp;&nbsp;
+            ANNOUNCEMENTS
         </span>
 
     </div>
@@ -918,16 +1302,32 @@ body{
 </div>
 
 
-<!-- Header -->
-
+<!-- HEADER -->
 <div class="header">
 
-    <img
-        src="pcglogo.png"
-        class="logo"
-        alt="Church Logo"
-        onerror="this.style.display='none'"
-    >
+    <div class="logo-frame">
+
+        <img
+            src="pcglogo.png"
+            class="logo"
+            alt="Church Logo"
+            onerror="this.style.display='none'"
+        >
+
+        <span class="logo-flower flower1">🌸</span>
+        <span class="logo-flower flower2">🌺</span>
+        <span class="logo-flower flower3">🌷</span>
+        <span class="logo-flower flower4">🌹</span>
+        <span class="logo-flower flower5">🌼</span>
+        <span class="logo-flower flower6">🌸</span>
+
+        <span class="petal petal1"></span>
+        <span class="petal petal2"></span>
+        <span class="petal petal3"></span>
+        <span class="petal petal4"></span>
+
+    </div>
+
 
     <div class="church-name">
         THE PENTECOSTAL CHURCH OF GOD
@@ -936,11 +1336,11 @@ body{
 </div>
 
 
+<!-- ANNOUNCEMENT CONTAINER -->
 <div class="announcement-container">
 
 
     <!-- INTRO -->
-
     <div class="announcement active intro">
 
         <div class="intro-box">
@@ -957,7 +1357,6 @@ body{
 
 
     <!-- HOMECELL -->
-
     <div class="announcement homecell">
 
         <img src="homeCell.jpeg">
@@ -965,9 +1364,7 @@ body{
         <div class="info">
 
             <h1>TUESDAY</h1>
-
             <h2>HOMECELL</h2>
-
             <h3>18:00</h3>
 
         </div>
@@ -976,7 +1373,6 @@ body{
 
 
     <!-- WOMEN'S SERVICE -->
-
     <div class="announcement women">
 
         <img src="WhatsApp Image 2026-08-03 at 22.19.28.jpeg">
@@ -984,9 +1380,7 @@ body{
         <div class="info">
 
             <h1>THURSDAY</h1>
-
             <h2>WOMEN'S SERVICE</h2>
-
             <h3>17:00</h3>
 
         </div>
@@ -995,7 +1389,6 @@ body{
 
 
     <!-- YOUTH SERVICE -->
-
     <div class="announcement youth">
 
         <img src="WhatsApp Image 2026-08-04 at 16.08.32.jpeg">
@@ -1003,9 +1396,7 @@ body{
         <div class="info">
 
             <h1>FRIDAY</h1>
-
             <h2>YOUTH SERVICE</h2>
-
             <h3>18:00</h3>
 
         </div>
@@ -1014,7 +1405,6 @@ body{
 
 
     <!-- REHEARSALS -->
-
     <div class="announcement rehearsal">
 
         <img src="worshipTeam.jpeg">
@@ -1022,9 +1412,7 @@ body{
         <div class="info">
 
             <h1>SATURDAY</h1>
-
             <h2>REHEARSALS</h2>
-
             <h3>14:00</h3>
 
         </div>
@@ -1033,7 +1421,6 @@ body{
 
 
     <!-- SUNDAY -->
-
     <div class="announcement sunday">
 
         <img src="sundayService.jpeg">
@@ -1041,9 +1428,7 @@ body{
         <div class="info">
 
             <h1>SUNDAY</h1>
-
             <h2>SUNDAY SERVICE</h2>
-
             <h3>09:00</h3>
 
         </div>
@@ -1051,33 +1436,33 @@ body{
     </div>
 
 
-    <!-- HAPPY WOMEN'S DAY SCREEN -->
-
+    <!-- WOMEN'S DAY CELEBRATION -->
     <div class="announcement thankyou">
 
+        <!-- Floating Flowers -->
+        <div class="floating-flower ff1">🌸</div>
+        <div class="floating-flower ff2">🌺</div>
+        <div class="floating-flower ff3">🌷</div>
+        <div class="floating-flower ff4">🌹</div>
 
         <!-- Floating Hearts -->
-
         <div class="heart h1">❤</div>
         <div class="heart h2">❤</div>
         <div class="heart h3">❤</div>
         <div class="heart h4">❤</div>
         <div class="heart h5">❤</div>
 
-
         <!-- Sparkles -->
-
         <div class="sparkle s1">✦</div>
         <div class="sparkle s2">✦</div>
         <div class="sparkle s3">✦</div>
         <div class="sparkle s4">✦</div>
 
-
         <div class="thankyou-box">
 
             <h1>HAPPY</h1>
 
-            <h2>WOMEN'S DAY</h2>
+            <h2>WOMEN'S MONTH</h2>
 
             <p>
                 Celebrating the Strength, Grace and Wisdom of Every Woman.
@@ -1091,33 +1476,28 @@ body{
 
     </div>
 
+
 </div>
 
 
-<!-- Floating Shapes -->
-
+<!-- FLOATING BACKGROUND SHAPES -->
 <div class="shape s1"></div>
 <div class="shape s2"></div>
 <div class="shape s3"></div>
 <div class="shape s4"></div>
 
 
-<!-- Footer -->
-
+<!-- FOOTER -->
 <div class="footer">
-
-    We exist to be heavenly bound,edify the church and evangelize the world.
-
+    We exist to be heavenly bound, edify the church and evangelize the world.
 </div>
 
 
 <script>
 
-
-// ================================
-// FLOATING SHAPES
-// ================================
-
+/* ================================
+   FLOATING SHAPES
+================================ */
 const shapes = document.querySelectorAll(".shape");
 
 setInterval(() => {
@@ -1129,13 +1509,12 @@ setInterval(() => {
 
     });
 
-},2500);
+}, 2500);
 
 
-// ================================
-// ANNOUNCEMENT SLIDESHOW
-// ================================
-
+/* ================================
+   ANNOUNCEMENT SLIDESHOW
+================================ */
 const slides =
     document.querySelectorAll(".announcement");
 
@@ -1154,7 +1533,6 @@ const slideShow = setInterval(() => {
         clearInterval(slideShow);
 
         return;
-
     }
 
     slides[currentSlide].classList.add("active");
@@ -1162,14 +1540,11 @@ const slideShow = setInterval(() => {
     if(currentSlide === slides.length - 1){
 
         clearInterval(slideShow);
-
     }
 
-},8000);
+}, 8000);
 
 </script>
 
 </body>
 </html>
-
-```
