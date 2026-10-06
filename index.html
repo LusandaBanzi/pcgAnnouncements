@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCG | Church Announcements</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden}
+:root{
+  --white:#f7fafc;
+  --muted:#b4c0cb;
+  --accent:#d9b56d;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-io:cubic-bezier(.76,0,.24,1);
+  --slide:7000ms;
+  --sunday-slide:10000ms;
+
+  /* =========================================================
+     EASY EDIT SETTINGS
+     Change these values first when customizing the screen.
+     ========================================================= */
+  --announcement-title-size:clamp(78px,9vw,150px);
+  --announcement-title-color:var(--white);
+  --announcement-subtitle-color:var(--muted);
+  --announcement-line-width:min(38vw,520px);
+}
+body{
+  font-family:Inter,Segoe UI,Arial,Helvetica,sans-serif;
+  color:var(--white);position:relative;background:#050b11;
+}
+
+/* ============ BACKGROUND ============ */
+.bg{position:absolute;inset:0;z-index:0;overflow:hidden;
+  background:
+    radial-gradient(ellipse at 50% 120%,rgba(104,78,38,.35),transparent 55%),
+    linear-gradient(160deg,#050b11 0%,#0a1824 45%,#07111a 100%)}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);will-change:transform}
+.o1{width:62vmax;height:62vmax;left:-18vmax;top:-24vmax;background:radial-gradient(circle,rgba(56,112,170,.60),transparent 65%);animation:d1 26s ease-in-out infinite alternate}
+.o2{width:56vmax;height:56vmax;right:-20vmax;bottom:-26vmax;background:radial-gradient(circle,rgba(217,181,109,.34),transparent 65%);animation:d2 30s ease-in-out infinite alternate}
+.o3{width:44vmax;height:44vmax;left:38%;top:28%;background:radial-gradient(circle,rgba(92,70,168,.30),transparent 65%);animation:d3 34s ease-in-out infinite alternate}
+@keyframes d1{to{transform:translate3d(40vw,30vh,0) scale(1.2)}}
+@keyframes d2{to{transform:translate3d(-38vw,-26vh,0) scale(1.15)}}
+@keyframes d3{to{transform:translate3d(-30vw,24vh,0) scale(1.3)}}
+.halo{position:absolute;inset:0;
+  background:radial-gradient(ellipse 55% 65% at 50% -12%,rgba(255,236,190,.22),transparent 72%);
+  animation:breathe 9s ease-in-out infinite alternate}
+@keyframes breathe{from{opacity:.55}to{opacity:1}}
+.ring{position:absolute;left:50%;top:50%;border-radius:50%;
+  border:1px solid rgba(217,181,109,.07);border-top-color:rgba(217,181,109,.38);
+  translate:-50% -50%}
+.r1{width:84vmin;height:84vmin;animation:spin 80s linear infinite}
+.r2{width:112vmin;height:112vmin;border-top-color:rgba(120,170,230,.28);animation:spin 120s linear infinite reverse}
+@keyframes spin{to{rotate:360deg}}
+.grain{position:absolute;inset:0;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+#fx{position:absolute;inset:0;z-index:1;pointer-events:none}
+.vignette{position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.55) 100%)}
+
+/* ============ HEADER ============ */
+.header{position:absolute;top:0;left:0;width:100%;height:14vh;display:flex;align-items:center;gap:1.4vw;padding:1.6vh 3.5vw;z-index:20;animation:headerIn 1s var(--ease) both}
+@keyframes headerIn{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+.logo{width:6.2vw;min-width:64px;max-width:94px;height:9vh;object-fit:contain;filter:drop-shadow(0 5px 14px rgba(0,0,0,.45))}
+.church-name{font-family:Georgia,"Times New Roman",serif;font-size:clamp(25px,2.65vw,43px);font-weight:800;letter-spacing:.025em;white-space:nowrap;max-width:58vw;overflow:hidden;text-overflow:ellipsis;color:#2f80c9;text-shadow:0 2px 12px rgba(0,0,0,.55),0 0 10px rgba(47,128,201,.18)}
+.dots{position:absolute;right:3.5vw;top:50%;transform:translateY(-50%);display:flex;gap:.6vw;z-index:20}
+.dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.2);transition:transform .5s var(--ease),background .5s,box-shadow .5s}
+.dots i.on{background:var(--accent);transform:scale(1.35);box-shadow:0 0 14px rgba(217,181,109,.55)}
+
+/* ============ SLIDES + TRANSITIONS ============ */
+.announcement-container{position:absolute;inset:14vh 0 13vh;z-index:10}
+.announcement{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  gap:5vw;padding:3vh 7vw;visibility:hidden;opacity:0;
+}
+.announcement.active,.announcement.prev{visibility:visible;opacity:1}
+.announcement.active{z-index:3;animation:var(--tn,t-fade) 1s var(--ease-io) var(--td,.3s) both}
+.announcement.prev{z-index:2;animation:t-out .5s ease both}
+.announcement.prev[data-out="push"]{animation:t-pushout 1s var(--ease-io) both}
+.announcement.flip{flex-direction:row-reverse}
+.announcement.intro,.announcement.week-message{flex-direction:column;text-align:center}
+
+/* PowerPoint-style slide transitions */
+[data-t="fade"]{--tn:t-fade}
+[data-t="push"]{--tn:t-push;--td:0s}
+[data-t="wipe"]{--tn:t-wipe}
+[data-t="split"]{--tn:t-split}
+[data-t="circle"]{--tn:t-circle}
+[data-t="zoom"]{--tn:t-zoom}
+[data-t="reveal"]{--tn:t-wipeup}
+@keyframes t-fade{from{opacity:0}to{opacity:1}}
+@keyframes t-push{from{transform:translateX(100%)}to{transform:none}}
+@keyframes t-pushout{to{transform:translateX(-100%)}}
+@keyframes t-out{to{opacity:0}}
+@keyframes t-wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(-80px)}}
+@keyframes t-wipeup{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(-80px)}}
+@keyframes t-split{from{clip-path:inset(50% 0 50% 0)}to{clip-path:inset(-80px)}}
+@keyframes t-circle{from{clip-path:circle(0% at 50% 50%)}to{clip-path:circle(100% at 50% 50%)}}
+@keyframes t-zoom{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:none}}
+
+/* ============ PowerPoint-style ANIMATIONS (entrance effects) ============ */
+[data-a]{opacity:0;transform-origin:left center}
+.prev [data-a]{opacity:1}
+.active [data-a]{animation-duration:var(--t,.9s);animation-delay:var(--d,0s);animation-timing-function:var(--ease);animation-fill-mode:both}
+.active [data-a="fade"]{animation-name:e-fade}
+.active [data-a="flyl"]{animation-name:e-flyl}
+.active [data-a="flyr"]{animation-name:e-flyr}
+.active [data-a="flyb"]{animation-name:e-flyb}
+.active [data-a="float"]{animation-name:e-float}
+.active [data-a="zoom"]{animation-name:e-zoom}
+.active [data-a="grow"]{animation-name:e-grow}
+.active [data-a="bounce"]{animation-name:e-bounce;animation-timing-function:ease-out}
+.active [data-a="wipel"]{animation-name:e-wipel}
+.active [data-a="split"]{animation-name:e-split}
+.active [data-a="spin"]{animation-name:e-spin}
+.active [data-a="swivel"]{animation-name:e-swivel}
+@keyframes e-fade{from{opacity:0}to{opacity:1}}
+@keyframes e-flyl{from{opacity:0;transform:translateX(-110vw)}to{opacity:1;transform:none}}
+@keyframes e-flyr{from{opacity:0;transform:translateX(110vw)}to{opacity:1;transform:none}}
+@keyframes e-flyb{from{opacity:0;transform:translateY(70vh)}to{opacity:1;transform:none}}
+@keyframes e-float{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes e-zoom{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:none}}
+@keyframes e-grow{from{opacity:0;transform:scale(.2) rotate(-120deg)}to{opacity:1;transform:none}}
+@keyframes e-bounce{0%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.14)}72%{transform:scale(.93)}100%{opacity:1;transform:none}}
+@keyframes e-wipel{from{opacity:1;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(-100px)}}
+@keyframes e-split{from{opacity:1;clip-path:inset(0 50% 0 50%)}to{opacity:1;clip-path:inset(-100px)}}
+@keyframes e-spin{from{opacity:0;transform:rotate(-360deg) scale(.1)}to{opacity:1;transform:none}}
+@keyframes e-swivel{from{opacity:0;transform:perspective(900px) rotateY(90deg)}to{opacity:1;transform:none}}
+
+/* ============ CARD ============ */
+.frame{position:relative;width:46%;height:67vh;max-height:74%;overflow:hidden;border-radius:26px;
+  box-shadow:0 28px 80px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.1)}
+.frame img,.frame video{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.15);
+  transition:transform calc(var(--slide) + 1200ms) cubic-bezier(.2,.6,.3,1)}
+.active .frame img,.active .frame video{transform:scale(1)}
+.prev .frame img,.prev .frame video{transition:none;transform:scale(1)}
+.frame video{background:#050b11}
+.frame:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.4))}
+
+.info{position:relative;min-width:38%;max-width:48%;padding:5vh 3.8vw;border-radius:26px;overflow:hidden;
+  border:1px solid rgba(217,181,109,.28);
+  background:radial-gradient(circle at 0% 0%,rgba(217,181,109,.14),transparent 55%),linear-gradient(135deg,rgba(17,31,44,.84),rgba(6,14,21,.76));
+  box-shadow:0 22px 60px rgba(0,0,0,.34);backdrop-filter:blur(14px)}
+.info:before{content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;pointer-events:none;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.09),transparent);transform:skewX(-12deg)}
+.active .info:before{animation:sweep 1.6s ease 1.6s 1 both}
+@keyframes sweep{from{left:-60%}to{left:140%}}
+.info h1{font-size:clamp(24px,2.5vw,48px);font-weight:600;letter-spacing:.14em;color:var(--muted)}
+.info h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(41px,4.5vw,85px);line-height:1.04;margin:1.2vh 0 2.2vh;font-weight:700}
+.info h3{display:inline-flex;align-items:center;gap:.6em;font-size:clamp(25px,2.7vw,48px);font-weight:600;letter-spacing:.05em;color:var(--accent);
+  padding:.2em .8em .2em .65em;border:1px solid rgba(217,181,109,.5);background:rgba(217,181,109,.09);border-radius:999px}
+.info h3:before{content:"";width:.34em;height:.34em;border-radius:50%;background:var(--accent);animation:pulse 2s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(217,181,109,.55)}100%{box-shadow:0 0 0 .6em rgba(217,181,109,0)}}
+
+/* Intro + closing slides */
+.intro h1{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:var(--announcement-title-size);
+  font-weight:700;
+  letter-spacing:.02em;
+  text-align:center;
+  width:100%;
+  text-shadow:0 8px 35px rgba(0,0,0,.42);
+  transform-origin:center;
+}
+.intro p{
+  margin:2.4vh auto 0;
+  text-align:center;
+  max-width:90vw;
+  font-size:clamp(19px,1.9vw,34px);
+  color:var(--muted);
+}
+.line{width:0;height:2px;margin-top:2.6vh;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+.active .line{animation:grow-line 1.2s var(--ease) .8s forwards}
+@keyframes grow-line{to{width:var(--announcement-line-width)}}
+.week-message h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(46px,6vw,108px);line-height:1.1;max-width:90vw;transform-origin:center}
+.typewriter{margin-top:2.8vh;font-size:clamp(20px,2vw,36px);color:var(--muted);min-height:1.4em}
+.cursor{display:inline-block;width:2px;height:1em;margin-left:.12em;background:var(--accent);vertical-align:-.12em;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* =========================================================
+   ANNOUNCEMENTS TITLE — TRUE CENTER
+   The intro slide fills the available stage and centers
+   the title horizontally and vertically.
+   ========================================================= */
+.announcement.intro{
+  inset:0;
+  width:100%;
+  height:100%;
+  padding:0 5vw;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  text-align:center;
+}
+
+.announcement.intro h1{
+  width:100%;
+  max-width:95vw;
+  margin:0 auto;
+  text-align:center;
+}
+
+.announcement.intro .line{
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.announcement.intro p{
+  width:100%;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+}
+
+/* ============ FOOTER (larger) ============ */
+.footer{position:absolute;bottom:0;left:0;width:100%;z-index:20;text-align:center;
+  padding:2.6vh 6vw 2.4vh;font-size:clamp(19px,2.3vw,40px);font-weight:750;line-height:1.35;letter-spacing:.04em;
+  color:rgba(244,247,250,.9);text-shadow:0 2px 10px rgba(0,0,0,.6);text-wrap:balance;
+  background:linear-gradient(transparent,rgba(3,8,13,.6))}
+
+.progress{position:absolute;left:0;bottom:0;height:4px;width:100%;z-index:30;transform-origin:left;transform:scaleX(0);
+  background:linear-gradient(90deg,#8d6c2f,var(--accent));box-shadow:0 0 12px rgba(217,181,109,.45);transition:opacity 1s}
+.progress.run{animation:prog var(--slide) linear forwards}
+@keyframes prog{to{transform:scaleX(1)}}
+
+/* ============ STATIC END STATE ============ */
+body.done .bg *,body.done .info h3:before{animation-play-state:paused!important}
+body.done .cursor{animation:none;opacity:0}
+body.done .progress{opacity:0}
+
+@media(max-width:900px){
+  .announcement{
+    padding:2vh 4vw;
+    gap:3vw;
+  }
+
+  .announcement.intro{
+    padding:0 4vw;
+  }
+
+  .announcement.intro h1{
+    max-width:92vw;
+  }
+
+  .frame{width:45%;height:55vh}
+  .church-name{font-size:clamp(16px,2.6vw,28px);max-width:62vw}
+  .dots{display:none}
+  .info{padding:3vh 3vw}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div class="bg">
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="halo"></div>
+  <div class="ring r1"></div><div class="ring r2"></div>
+  <div class="grain"></div>
+</div>
+<canvas id="fx"></canvas>
+<div class="vignette"></div>
+
+<!-- =====================================================
+     EASY HTML EDITING GUIDE
+     -----------------------------------------------------
+     • Church name/logo: edit the HEADER section.
+     • Main title: edit the INTRO section.
+     • Weekly announcements: edit each ANNOUNCEMENT section.
+     • Final message: edit the WEEK MESSAGE section.
+     • Footer text: edit the FOOTER section.
+     Keep image paths inside assets/images/.
+     ===================================================== -->
+
+<header class="header">
+  <img src="assets/images/pcglogo.webp" class="logo" alt="The Pentecostal Church of God" decoding="async" loading="eager">
+  <div class="church-name">THE PENTECOSTAL CHURCH OF GOD</div>
+  <div class="dots" id="dots"></div>
+</header>
+
+<main class="announcement-container">
+
+  <!-- ================= INTRO SLIDE ================= -->
+  <section class="announcement intro active" data-t="fade">
+    <h1 data-a="zoom" style="--t:1.2s;--d:.4s">ANNOUNCEMENTS</h1>
+    <div class="line"></div>
+    <p data-a="float" style="--d:1.1s">Please take note of the following weekly church services.</p>
+  </section>
+
+  <!-- ================= TUESDAY ================= -->
+  <section class="announcement" data-t="push">
+    <div class="frame" data-a="flyl" style="--t:1.1s"><img src="assets/images/homecell.webp" alt="Homecell" loading="lazy" decoding="async"></div>
+    <div class="info" data-a="float" style="--d:.6s">
+      <h1 data-a="wipel" style="--d:1.1s">TUESDAY</h1>
+      <h2 data-a="flyb" style="--d:1.4s">HOMECELL</h2>
+      <h3 data-a="bounce" style="--d:2s;--t:.9s">18:00</h3>
+    </div>
+  </section>
+
+  <!-- ================= THURSDAY ================= -->
+  <section class="announcement" data-t="wipe">
+    <div class="frame" data-a="swivel" style="--t:1.1s"><img src="assets/images/whatsapp-image-2026-08-03-at-22-19-28.webp" alt="Women's Service" loading="lazy" decoding="async"></div>
+    <div class="info" data-a="flyl" style="--d:.5s;--t:1s">
+      <h1 data-a="fade" style="--d:1.2s">THURSDAY</h1>
+      <h2 data-a="zoom" style="--d:1.5s">WOMEN'S SERVICE</h2>
+      <h3 data-a="grow" style="--d:2.1s">17:00</h3>
+    </div>
+  </section>
+
+  <!-- ================= FRIDAY ================= -->
+  <section class="announcement" data-t="split">
+    <div class="frame" data-a="zoom" style="--t:1.1s"><img src="assets/images/whatsapp-image-2026-09-03-at-21-01-22.webp" alt="Youth Service" loading="lazy" decoding="async"></div>
+    <div class="info" data-a="flyr" style="--d:.6s;--t:1s">
+      <h1 data-a="float" style="--d:1.2s">FRIDAY</h1>
+      <h2 data-a="wipel" style="--d:1.5s;--t:1s">YOUTH SERVICE</h2>
+      <h3 data-a="spin" style="--d:2.1s;--t:1s">18:00</h3>
+    </div>
+  </section>
+
+  <!-- ================= SATURDAY ================= -->
+  <section class="announcement" data-t="circle">
+    <div class="frame" data-a="grow" style="--t:1.1s"><img src="assets/images/worshipteam.webp" alt="Rehearsals" loading="lazy" decoding="async"></div>
+    <div class="info" data-a="flyb" style="--d:.5s;--t:1s">
+      <h1 data-a="wipel" style="--d:1.2s">SATURDAY</h1>
+      <h2 data-a="float" style="--d:1.5s">REHEARSALS</h2>
+      <h3 data-a="bounce" style="--d:2s">14:00</h3>
+    </div>
+  </section>
+
+  <!-- ================= SUNDAY ================= -->
+  <!-- Sunday is the final announcement -->
+  <section class="announcement" data-t="zoom">
+    <div class="frame" data-a="wipel" style="--t:1.2s">
+      <video class="sunday-video" preload="metadata" muted playsinline poster="assets/images/sundayservice-poster.webp" aria-label="Sunday Service">
+        <source src="assets/images/sundayservice.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="info" data-a="float" style="--d:.6s">
+      <h1 data-a="fade" style="--d:1.1s">SUNDAY</h1>
+      <h2 data-a="flyr" style="--d:1.4s">SUNDAY SERVICE</h2>
+      <h3 data-a="zoom" style="--d:2s">09:00</h3>
+    </div>
+  </section>
+
+  <!-- ================= FINAL MESSAGE ================= -->
+  <!-- Final message: stays on screen, nothing loops after this -->
+  <section class="announcement week-message" data-t="reveal">
+    <h1 data-a="swivel" style="--t:1.3s;--d:.5s">HAVE A BLESSED AND BEAUTIFUL WEEK</h1>
+    <div class="line"></div>
+    <div class="typewriter"><span id="typed"></span><span class="cursor"></span></div>
+  </section>
+</main>
+
+<div class="footer">We exist to be heavenly bound, edify the church and evangelize the world.</div>
+<div class="progress" id="bar"></div>
+
+<script>
+/* =========================================================
+   JAVASCRIPT SETTINGS
+   ========================================================= */
+const slides = [...document.querySelectorAll('.announcement')];
+
+const slideTime = 7000;
+const sundayTime = 18000;
+
+const typeText =
+  'May God bless you, keep you, and guide you throughout the week.';
+
+const last = slides.length - 1;
+
+let current = 0;
+let typeTimer;
+let slideTimer;
+
+/* Alternate card layout (cards only) + progress dots */
+const dots=document.getElementById('dots');
+let cardN=0;
+slides.forEach(s=>{
+  if(s.querySelector('.frame')){ if(cardN%2===1) s.classList.add('flip'); cardN++; }
+  dots.appendChild(document.createElement('i'));
+});
+
+const bar=document.getElementById('bar');
+function restartBar(){bar.classList.remove('run');void bar.offsetWidth;bar.classList.add('run');}
+
+function showSlide(i) {
+  const old = slides.find(slide => slide.classList.contains('active'));
+
+  if (old && old !== slides[i]) {
+    old.classList.remove('active');
+    old.dataset.out = slides[i].dataset.t === 'push' ? 'push' : '';
+    old.classList.add('prev');
+
+    setTimeout(() => {
+      old.classList.remove('prev');
+    }, 1300);
+  }
+
+  slides[i].classList.remove('prev');
+  slides[i].classList.add('active');
+
+  [...dots.children].forEach((dot, index) => {
+    dot.classList.toggle('on', index === i);
+  });
+
+  if (i < last) {
+    restartBar();
+  }
+
+  const sundayVideo = document.querySelector('.sunday-video');
+  if (sundayVideo) {
+    if (i === last - 1) {
+      sundayVideo.preload = 'auto';
+      sundayVideo.currentTime = 0;
+      sundayVideo.play().catch(() => {});
+    } else {
+      sundayVideo.pause();
+    }
+  }
+}
+
+/* End state: everything stops and the page stays still */
+function finish() {
+  clearTimeout(slideTimer);
+  document.body.classList.add('done');
+  bar.classList.remove('run');
+
+  const sundayVideo = document.querySelector('.sunday-video');
+  if (sundayVideo) sundayVideo.pause();
+
+  if (window.stopFx) {
+    window.stopFx();
+  }
+}
+function typeMessage() {
+  const element = document.getElementById('typed');
+
+  element.textContent = '';
+
+  let index = 0;
+
+  function type() {
+    if (index <= typeText.length) {
+      element.textContent = typeText.slice(0, index++);
+      typeTimer = setTimeout(type, 55);
+    } else {
+      setTimeout(finish, 1200);
+    }
+  }
+
+  typeTimer = setTimeout(type, 1800);
+}
+function advance() {
+  if (current >= last) {
+    return; // Never wraps back to the start.
+  }
+
+  current++;
+  showSlide(current);
+
+  if (current === last) {
+    bar.classList.remove('run');
+    typeMessage();
+  } else {
+    slideTimer = setTimeout(advance, current === last - 1 ? sundayTime : slideTime);
+  }
+}
+showSlide(0);
+slideTimer=setTimeout(advance, slideTime);
+
+/* Floating light particles (gold + blue), freezes at the end */
+(function(){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const c=document.getElementById('fx'),x=c.getContext('2d');let W,H,raf;
+  const rs=()=>{W=c.width=innerWidth;H=c.height=innerHeight};addEventListener('resize',rs);rs();
+  const P=Array.from({length:60},()=>{
+    const gold=Math.random()<.45;
+    return {x:Math.random()*W,y:Math.random()*H,r:Math.random()*3+.6,s:Math.random()*.6+.12,a:Math.random()*.6+.25,d:Math.random()*6.28,
+            col:gold?'255,220,150':'170,210,255'};
+  });
+  function loop(){
+    x.clearRect(0,0,W,H);
+    for(const p of P){
+      p.y-=p.s;p.d+=.012;p.x+=Math.sin(p.d)*.35;
+      if(p.y<-8){p.y=H+8;p.x=Math.random()*W}
+      const g=p.a*(.5+.5*Math.sin(p.d*3));
+      x.beginPath();x.arc(p.x,p.y,p.r,0,6.283);
+      x.fillStyle='rgba('+p.col+','+g+')';x.shadowColor='rgba('+p.col+',.9)';x.shadowBlur=8;x.fill();
+    }
+    raf=requestAnimationFrame(loop);
+  }
+  loop();
+  window.stopFx=()=>cancelAnimationFrame(raf);
+})();
+</script>
+</body>
+</html>
